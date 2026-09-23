@@ -35,7 +35,7 @@
       background-color: var(--bg-dark);
       color: var(--text);
       line-height: 1.4;
-      padding-bottom: 120px;
+      padding-bottom: 150px;
     }
 
     h1, h2, h3, h4, .token-text {
@@ -131,16 +131,6 @@
       max-height: 340px;
       object-fit: cover;
       display: block;
-    }
-
-    .welcome-badge {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 6px;
     }
 
     .hero h2 {
@@ -278,6 +268,7 @@
       color: #fff;
     }
 
+    /* Sticky Bottom Bar */
     .checkout-bar {
       position: fixed;
       bottom: 24px;
@@ -289,11 +280,17 @@
       border: 1px solid rgba(255, 87, 34, 0.5);
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       border-radius: 14px;
-      padding: 10px 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 50;
+    }
+
+    .checkout-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      z-index: 50;
     }
 
     .checkout-btn {
@@ -309,6 +306,63 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    /* Referral / Promo Section */
+    .referral-box {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .referral-input {
+      flex: 1;
+      background: #14171d;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 0.82rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      text-transform: uppercase;
+      outline: none;
+    }
+
+    .referral-input:focus {
+      border-color: var(--primary);
+    }
+
+    .referral-btn {
+      background: #2b303c;
+      color: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .referral-btn:hover {
+      background: var(--primary);
+    }
+
+    .discount-tag {
+      font-size: 0.74rem;
+      color: var(--green);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .price-strike {
+      text-decoration: line-through;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-right: 6px;
+      font-weight: normal;
     }
 
     .modal-overlay {
@@ -445,7 +499,6 @@
       text-decoration: none;
     }
 
-    /* Bottom-Right Watermark */
     .watermark {
       position: fixed;
       bottom: 6px;
@@ -482,15 +535,14 @@
     </div>
   </header>
 
-  <!-- Hero with Team Picture & Welcome Greeting -->
+  <!-- Hero -->
   <section class="hero">
     <div class="hero-banner-container">
       <img src="our pic.png" alt="Chithappa's Cafe Chefs" class="hero-banner-img" />
     </div>
-    <div class="welcome-badge"></div>
     <h2>Chithappa's Cafe <span>Welcomes You</span></h2>
     <p style="font-size: 0.82rem; color: var(--text-muted); max-width: 340px; margin: 4px auto 0;">
-      Good Food, Better Mood! Order directly, pay via UPI, and grab your instant token number.
+      Good Food, Better Mood! Use code <strong>CHITHAPPA</strong> for 5% off on your bill.
     </p>
   </section>
 
@@ -866,15 +918,25 @@
 
   </main>
 
-  <!-- Sticky Bottom Bar -->
+  <!-- Sticky Bottom Checkout Bar -->
   <div class="checkout-bar" id="checkoutBar" style="display: none;">
-    <div>
-      <div style="font-size: 0.72rem; color: var(--text-muted);" id="itemCount">0 Items</div>
-      <div style="font-size: 1.15rem; font-weight: 800; color: #fff;" id="cartTotal">₹0</div>
+    
+    <!-- Promo Code Entry -->
+    <div class="referral-box">
+      <input type="text" id="promoInput" class="referral-input" placeholder="Referral Code (e.g. CHITHAPPA)" />
+      <button class="referral-btn" onclick="applyPromoCode()">Apply</button>
     </div>
-    <button class="checkout-btn" onclick="openPaymentModal()">
-      Proceed to Pay <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
-    </button>
+    <div id="promoMessage" style="font-size: 0.72rem; min-height: 14px;"></div>
+
+    <div class="checkout-row">
+      <div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);" id="itemCount">0 Items</div>
+        <div style="font-size: 1.15rem; font-weight: 800; color: #fff;" id="cartTotal">₹0</div>
+      </div>
+      <button class="checkout-btn" onclick="openPaymentModal()">
+        Proceed to Pay <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+      </button>
+    </div>
   </div>
 
   <!-- Bottom-Right Watermark -->
@@ -886,7 +948,7 @@
       <button class="modal-close" onclick="closeModals()"><i data-lucide="x"></i></button>
       
       <h3 style="font-size: 1.1rem; font-weight: 700;">Scan &amp; Pay via UPI</h3>
-      <p style="font-size: 0.76rem; color: var(--text-muted); margin-top: 2px;">Pay, share the screenshot, and get your token</p>
+      <p style="font-size: 0.76rem; color: var(--text-muted); margin-top: 2px;">Pay directly to counter to generate your token</p>
 
       <div class="qr-container">
         <img id="dynamicQR" class="qr-img" src="" alt="UPI QR Code" />
@@ -940,10 +1002,35 @@
     const PAYEE_NAME = "Perseen M.P";
     const STALL_WHATSAPP = "+918838553103"; 
 
+    // Accepted Referral/Promo Codes for 5% off
+    const VALID_CODES = ["CHITHAPPA", "PERSEEN5", "WELCOME5"];
+    let appliedDiscountRate = 0;
+    let appliedPromoCode = "";
+
     let cart = {};
     let currentToken = localStorage.getItem("last_token_num") 
       ? parseInt(localStorage.getItem("last_token_num")) 
       : 100;
+
+    function applyPromoCode() {
+      const input = document.getElementById("promoInput").value.trim().toUpperCase();
+      const msgElem = document.getElementById("promoMessage");
+
+      if (VALID_CODES.includes(input)) {
+        appliedDiscountRate = 0.05; // 5%
+        appliedPromoCode = input;
+        msgElem.innerHTML = `<span style="color: var(--green);">🎉 5% discount applied (${input})!</span>`;
+      } else if (input === "") {
+        appliedDiscountRate = 0;
+        appliedPromoCode = "";
+        msgElem.innerHTML = "";
+      } else {
+        appliedDiscountRate = 0;
+        appliedPromoCode = "";
+        msgElem.innerHTML = `<span style="color: #ef4444;">Invalid code. Try CHITHAPPA</span>`;
+      }
+      renderCartBar();
+    }
 
     function updateItem(name, price, delta) {
       if (!cart[name]) {
@@ -961,31 +1048,43 @@
       renderCartBar();
     }
 
-    function renderCartBar() {
+    function calculateTotals() {
       let totalQty = 0;
-      let totalAmt = 0;
+      let rawAmt = 0;
       for (const item in cart) {
         totalQty += cart[item].qty;
-        totalAmt += cart[item].qty * cart[item].price;
+        rawAmt += cart[item].qty * cart[item].price;
       }
 
+      let discount = Math.round(rawAmt * appliedDiscountRate);
+      let finalAmt = Math.max(0, rawAmt - discount);
+
+      return { totalQty, rawAmt, discount, finalAmt };
+    }
+
+    function renderCartBar() {
+      const { totalQty, rawAmt, discount, finalAmt } = calculateTotals();
       const bar = document.getElementById("checkoutBar");
+
       if (totalQty > 0) {
         bar.style.display = "flex";
         document.getElementById("itemCount").innerText = `${totalQty} Item${totalQty > 1 ? 's' : ''}`;
-        document.getElementById("cartTotal").innerText = `₹${totalAmt}`;
+        
+        if (discount > 0) {
+          document.getElementById("cartTotal").innerHTML = 
+            `<span class="price-strike">₹${rawAmt}</span> ₹${finalAmt} <span class="discount-tag">(-5% off)</span>`;
+        } else {
+          document.getElementById("cartTotal").innerText = `₹${rawAmt}`;
+        }
       } else {
         bar.style.display = "none";
       }
     }
 
     function openPaymentModal() {
-      let totalAmt = 0;
-      for (const item in cart) {
-        totalAmt += cart[item].qty * cart[item].price;
-      }
+      const { finalAmt } = calculateTotals();
 
-      const upiUrl = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${totalAmt}&cu=INR&tn=${encodeURIComponent("Stall Order")}`;
+      const upiUrl = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${finalAmt}&cu=INR&tn=${encodeURIComponent("Stall Order")}`;
       const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiUrl)}`;
       
       document.getElementById("dynamicQR").src = qrApiUrl;
@@ -999,27 +1098,37 @@
       localStorage.setItem("last_token_num", currentToken);
       const tokenString = `#TK-${currentToken}`;
 
-      let totalAmt = 0;
+      const { rawAmt, discount, finalAmt } = calculateTotals();
       let itemsListText = "";
       let orderSummaryHtml = "";
 
       for (const item in cart) {
         const cost = cart[item].qty * cart[item].price;
-        totalAmt += cost;
         itemsListText += `• ${item} x${cart[item].qty} (₹${cost})\n`;
         orderSummaryHtml += `<div>${item} x${cart[item].qty} — ₹${cost}</div>`;
       }
 
+      if (discount > 0) {
+        orderSummaryHtml += `
+          <div style="color: var(--green); margin-top: 4px;">
+            Discount (${appliedPromoCode}): -₹${discount} (5%)
+          </div>`;
+      }
+
       document.getElementById("tokenNumberDisplay").innerText = tokenString;
       document.getElementById("orderItemsSummary").innerHTML = orderSummaryHtml;
-      document.getElementById("orderTotalSummary").innerText = `Total Paid: ₹${totalAmt}`;
+      document.getElementById("orderTotalSummary").innerText = `Total Paid: ₹${finalAmt}`;
+
+      const waDiscountLine = discount > 0 
+        ? `\n*Discount (${appliedPromoCode}):* -₹${discount} (5% OFF)` 
+        : '';
 
       const waMessage = 
 `🔔 *NEW PAID ORDER — TOKEN ${tokenString}*
 --------------------------------
 *Token:* ${tokenString}
-*Status:* Paid via UPI
-*Total Amount:* ₹${totalAmt}
+*Status:* Paid via UPI${waDiscountLine}
+*Total Paid:* ₹${finalAmt}
 
 *Ordered Items:*
 ${itemsListText}
@@ -1032,7 +1141,12 @@ ${itemsListText}
       document.getElementById("paymentModal").style.display = "none";
       document.getElementById("tokenModal").style.display = "flex";
 
+      // Reset
       cart = {};
+      appliedDiscountRate = 0;
+      appliedPromoCode = "";
+      document.getElementById("promoInput").value = "";
+      document.getElementById("promoMessage").innerHTML = "";
       document.querySelectorAll("[id^='qty-']").forEach(el => el.innerText = "0");
       renderCartBar();
     }
