@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chithappa's Cafe | Quick Bites</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --primary: #ff5722;
+      --primary-dark: #e64a19;
+      --accent: #ffb300;
+      --bg-dark: #111317;
+      --card-bg: #1a1d24;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --green: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.4;
+      padding-bottom: 120px;
+    }
+
+    h1, h2, h3, h4, .token-text {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .glow {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(255, 87, 34, 0.25) 0%, transparent 70%);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(17, 19, 23, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(255, 87, 34, 0.35);
+    }
+
+    .status-chip {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--green);
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 10px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse 1.4s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    .hero {
+      text-align: center;
+      padding: 18px 16px 12px;
+      position: relative;
+    }
+
+    .hero-banner-container {
+      max-width: 580px;
+      margin: 0 auto 16px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 179, 0, 0.35);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 87, 34, 0.2);
+      position: relative;
+    }
+
+    .hero-banner-img {
+      width: 100%;
+      max-height: 340px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .welcome-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .hero h2 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .hero h2 span {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      padding: 8px 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      position: sticky;
+      top: 65px;
+      z-index: 30;
+      background: rgba(17, 19, 23, 0.95);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .categories::-webkit-scrollbar { display: none; }
+
+    .cat-btn {
+      background: #222630;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cat-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .menu-list {
+      max-width: 580px;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .dish-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: border-color 0.2s ease;
+    }
+
+    .dish-card:hover {
+      border-color: rgba(255, 87, 34, 0.4);
+    }
+
+    .dish-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dish-emoji {
+      width: 54px;
+      height: 54px;
+      background: #252833;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .dish-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .dish-desc {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .dish-price {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.98rem;
+      margin-top: 4px;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-action {
+      background: rgba(255, 87, 34, 0.15);
+      border: 1px solid rgba(255, 87, 34, 0.4);
+      color: var(--primary);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action:active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .checkout-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 12px;
+      right: 12px;
+      max-width: 550px;
+      margin: 0 auto;
+      background: #1e222b;
+      border: 1px solid rgba(255, 87, 34, 0.5);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 50;
+    }
+
+    .checkout-btn {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #111;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 800;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(5px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #1b1e26;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      padding: 22px;
+      text-align: center;
+      position: relative;
+      animation: zoomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .qr-container {
+      background: #fff;
+      padding: 12px;
+      border-radius: 14px;
+      display: inline-block;
+      margin: 14px 0;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+    }
+
+    .qr-img {
+      width: 180px;
+      height: 180px;
+      display: block;
+    }
+
+    .upi-info {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .upi-id-box {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .btn-paid {
+      width: 100%;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .ticket-badge {
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 2px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .token-display {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 6px 0;
+      text-shadow: 0 0 16px rgba(255, 87, 34, 0.6);
+      background: linear-gradient(135deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .ticket-divider {
+      border-top: 2px dashed rgba(255, 255, 255, 0.1);
+      margin: 14px 0;
+    }
+
+    .whatsapp-send-btn {
+      width: 100%;
+      background: #25d366;
+      color: #fff;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+      margin-top: 12px;
+      text-decoration: none;
+    }
+
+    /* Bottom-Right Watermark */
+    .watermark {
+      position: fixed;
+      bottom: 6px;
+      right: 14px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      opacity: 0.55;
+      letter-spacing: 0.4px;
+      z-index: 60;
+      pointer-events: none;
+      user-select: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow" style="top: 0; left: 0;"></div>
+  <div class="glow" style="top: 350px; right: 0;"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🍗</div>
+      <div>
+        <h1 style="font-size: 1.1rem; font-weight: 700;">Chithappa's Cafe</h1>
+        <p style="font-size: 0.72rem; color: var(--text-muted);">Grab &amp; Go</p>
+      </div>
+    </div>
+    <div class="status-chip">
+      <span class="live-dot"></span>
+      Counter Open
+    </div>
+  </header>
+
+  <!-- Hero with Team Picture & Welcome Greeting -->
+  <section class="hero">
+    <div class="hero-banner-container">
+      <img src="our pic.png" alt="Chithappa's Cafe Chefs" class="hero-banner-img" />
+    </div>
+    <div class="welcome-badge"></div>
+    <h2>Chithappa's Cafe <span>Welcomes You</span></h2>
+    <p style="font-size: 0.82rem; color: var(--text-muted); max-width: 340px; margin: 4px auto 0;">
+      Good Food, Better Mood! Order directly, pay via UPI, and grab your instant token number.
+    </p>
+  </section>
+
+  <!-- Filter -->
+  <div class="categories">
+    <button class="cat-btn active" onclick="filterCat('all', this)">All Items</button>
+    <button class="cat-btn" onclick="filterCat('snacks', this)">🍟 Snacks</button>
+    <button class="cat-btn" onclick="filterCat('mojito', this)">🍃 Mojitos</button>
+    <button class="cat-btn" onclick="filterCat('shakes', this)">🥤 Shakes</button>
+    <button class="cat-btn" onclick="filterCat('juice', this)">🍉 Fresh Juice</button>
+    <button class="cat-btn" onclick="filterCat('desserts', this)">🍨 Desserts &amp; Ice Cream</button>
+  </div>
+
+  <!-- Menu Feed -->
+  <main class="menu-list" id="menuList">
+
+    <!-- SNACKS -->
+    <div class="dish-card" data-cat="snacks">
+      <div class="dish-left">
+        <div class="dish-emoji">🍟</div>
+        <div>
+          <div class="dish-name">Loaded Fries</div>
+          <div class="dish-desc">Crispy fries with special sauces &amp; toppings</div>
+          <div class="dish-price">₹90</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Loaded Fries', 90, -1)">-</button>
+        <span id="qty-Loaded Fries" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Loaded Fries', 90, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="snacks">
+      <div class="dish-left">
+        <div class="dish-emoji">🍗</div>
+        <div>
+          <div class="dish-name">Chicken Nuggets</div>
+          <div class="dish-desc">Crispy golden fried bites with dip</div>
+          <div class="dish-price">₹70</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Chicken Nuggets', 70, -1)">-</button>
+        <span id="qty-Chicken Nuggets" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Chicken Nuggets', 70, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="snacks">
+      <div class="dish-left">
+        <div class="dish-emoji">🥪</div>
+        <div>
+          <div class="dish-name">Chicken Sandwich</div>
+          <div class="dish-desc">Juicy seasoned chicken filling toasted</div>
+          <div class="dish-price">₹60</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Chicken Sandwich', 60, -1)">-</button>
+        <span id="qty-Chicken Sandwich" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Chicken Sandwich', 60, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="snacks">
+      <div class="dish-left">
+        <div class="dish-emoji">🍳</div>
+        <div>
+          <div class="dish-name">Spicy Bread Omelette</div>
+          <div class="dish-desc">Masala egg toast with green chillies &amp; onions</div>
+          <div class="dish-price">₹50</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Spicy Bread Omelette', 50, -1)">-</button>
+        <span id="qty-Spicy Bread Omelette" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Spicy Bread Omelette', 50, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="snacks">
+      <div class="dish-left">
+        <div class="dish-emoji">🍞</div>
+        <div>
+          <div class="dish-name">Sweet Bread Omelette</div>
+          <div class="dish-desc">Classic slightly sweetened street style bread omelette</div>
+          <div class="dish-price">₹50</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Sweet Bread Omelette', 50, -1)">-</button>
+        <span id="qty-Sweet Bread Omelette" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Sweet Bread Omelette', 50, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="snacks">
+      <div class="dish-left">
+        <div class="dish-emoji">🥪</div>
+        <div>
+          <div class="dish-name">Egg Sandwich</div>
+          <div class="dish-desc">Toasted sandwich layered with seasoned eggs</div>
+          <div class="dish-price">₹45</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Egg Sandwich', 45, -1)">-</button>
+        <span id="qty-Egg Sandwich" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Egg Sandwich', 45, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="snacks">
+      <div class="dish-left">
+        <div class="dish-emoji">🍟</div>
+        <div>
+          <div class="dish-name">French Fries</div>
+          <div class="dish-desc">Golden crisp salted potato fries</div>
+          <div class="dish-price">₹45</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('French Fries', 45, -1)">-</button>
+        <span id="qty-French Fries" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('French Fries', 45, 1)">+</button>
+      </div>
+    </div>
+
+    <!-- MOJITOS -->
+    <div class="dish-card" data-cat="mojito">
+      <div class="dish-left">
+        <div class="dish-emoji">🍋</div>
+        <div>
+          <div class="dish-name">Lime Mojito</div>
+          <div class="dish-desc">Zesty fresh lime soda with mint &amp; ice</div>
+          <div class="dish-price">₹45</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Lime Mojito', 45, -1)">-</button>
+        <span id="qty-Lime Mojito" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Lime Mojito', 45, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="mojito">
+      <div class="dish-left">
+        <div class="dish-emoji">🫐</div>
+        <div>
+          <div class="dish-name">Blueberry Mojito</div>
+          <div class="dish-desc">Chilled sweet blueberry syrup &amp; fizz</div>
+          <div class="dish-price">₹45</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Blueberry Mojito', 45, -1)">-</button>
+        <span id="qty-Blueberry Mojito" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Blueberry Mojito', 45, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="mojito">
+      <div class="dish-left">
+        <div class="dish-emoji">🍃</div>
+        <div>
+          <div class="dish-name">Mint Mojito</div>
+          <div class="dish-desc">Cool crushed fresh mint cooler</div>
+          <div class="dish-price">₹45</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Mint Mojito', 45, -1)">-</button>
+        <span id="qty-Mint Mojito" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Mint Mojito', 45, 1)">+</button>
+      </div>
+    </div>
+
+    <!-- SHAKES -->
+    <div class="dish-card" data-cat="shakes">
+      <div class="dish-left">
+        <div class="dish-emoji">🍦</div>
+        <div>
+          <div class="dish-name">Vanilla Shake</div>
+          <div class="dish-desc">Classic creamy vanilla thick shake</div>
+          <div class="dish-price">₹60</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Vanilla Shake', 60, -1)">-</button>
+        <span id="qty-Vanilla Shake" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Vanilla Shake', 60, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="shakes">
+      <div class="dish-left">
+        <div class="dish-emoji">🍪</div>
+        <div>
+          <div class="dish-name">Oreo Shake</div>
+          <div class="dish-desc">Blended with crunchy Oreo cookies &amp; chocolate</div>
+          <div class="dish-price">₹60</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Oreo Shake', 60, -1)">-</button>
+        <span id="qty-Oreo Shake" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Oreo Shake', 60, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="shakes">
+      <div class="dish-left">
+        <div class="dish-emoji">🍫</div>
+        <div>
+          <div class="dish-name">KitKat Shake</div>
+          <div class="dish-desc">Rich cocoa shake with crushed KitKat wafers</div>
+          <div class="dish-price">₹60</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('KitKat Shake', 60, -1)">-</button>
+        <span id="qty-KitKat Shake" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('KitKat Shake', 60, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="shakes">
+      <div class="dish-left">
+        <div class="dish-emoji">🥤</div>
+        <div>
+          <div class="dish-name">Sharjah Shake</div>
+          <div class="dish-desc">Kerala-style thick banana and milk booster</div>
+          <div class="dish-price">₹60</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Sharjah Shake', 60, -1)">-</button>
+        <span id="qty-Sharjah Shake" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Sharjah Shake', 60, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="shakes">
+      <div class="dish-left">
+        <div class="dish-emoji">🍌</div>
+        <div>
+          <div class="dish-name">Banana Shake</div>
+          <div class="dish-desc">Freshly blended smooth banana milkshake</div>
+          <div class="dish-price">₹60</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Banana Shake', 60, -1)">-</button>
+        <span id="qty-Banana Shake" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Banana Shake', 60, 1)">+</button>
+      </div>
+    </div>
+
+    <!-- FRESH JUICE -->
+    <div class="dish-card" data-cat="juice">
+      <div class="dish-left">
+        <div class="dish-emoji">🍉</div>
+        <div>
+          <div class="dish-name">Watermelon Juice</div>
+          <div class="dish-desc">Pure fresh watermelon juice, served chilled</div>
+          <div class="dish-price">₹25</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Watermelon Juice', 25, -1)">-</button>
+        <span id="qty-Watermelon Juice" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Watermelon Juice', 25, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="juice">
+      <div class="dish-left">
+        <div class="dish-emoji">🍋</div>
+        <div>
+          <div class="dish-name">Fresh Lime Juice</div>
+          <div class="dish-desc">Refreshing squeezed sweet &amp; salt lime juice</div>
+          <div class="dish-price">₹25</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Fresh Lime Juice', 25, -1)">-</button>
+        <span id="qty-Fresh Lime Juice" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Fresh Lime Juice', 25, 1)">+</button>
+      </div>
+    </div>
+
+    <!-- DESSERTS & ICE CREAM -->
+    <div class="dish-card" data-cat="desserts">
+      <div class="dish-left">
+        <div class="dish-emoji">🍫</div>
+        <div>
+          <div class="dish-name">Brownie</div>
+          <div class="dish-desc">Warm fudge chocolate brownie</div>
+          <div class="dish-price">₹45</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Brownie', 45, -1)">-</button>
+        <span id="qty-Brownie" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Brownie', 45, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="desserts">
+      <div class="dish-left">
+        <div class="dish-emoji">🍨</div>
+        <div>
+          <div class="dish-name">Brownie with Ice Cream</div>
+          <div class="dish-desc">Warm brownie topped with a scoop of vanilla</div>
+          <div class="dish-price">₹55</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Brownie with Ice Cream', 55, -1)">-</button>
+        <span id="qty-Brownie with Ice Cream" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Brownie with Ice Cream', 55, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="desserts">
+      <div class="dish-left">
+        <div class="dish-emoji">🍦</div>
+        <div>
+          <div class="dish-name">Vanilla Scoop (1 Scoop)</div>
+          <div class="dish-desc">Single scoop vanilla with toppings</div>
+          <div class="dish-price">₹20</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Vanilla Scoop 1x', 20, -1)">-</button>
+        <span id="qty-Vanilla Scoop 1x" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Vanilla Scoop 1x', 20, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="desserts">
+      <div class="dish-left">
+        <div class="dish-emoji">🍨</div>
+        <div>
+          <div class="dish-name">Vanilla Scoop (2 Scoops)</div>
+          <div class="dish-desc">Double scoop vanilla with toppings</div>
+          <div class="dish-price">₹40</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Vanilla Scoop 2x', 40, -1)">-</button>
+        <span id="qty-Vanilla Scoop 2x" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Vanilla Scoop 2x', 40, 1)">+</button>
+      </div>
+    </div>
+
+    <div class="dish-card" data-cat="desserts">
+      <div class="dish-left">
+        <div class="dish-emoji">🍧</div>
+        <div>
+          <div class="dish-name">Vanilla Scoop (3 Scoops)</div>
+          <div class="dish-desc">Triple scoop vanilla feast with toppings</div>
+          <div class="dish-price">₹55</div>
+        </div>
+      </div>
+      <div class="qty-controls">
+        <button class="btn-action" onclick="updateItem('Vanilla Scoop 3x', 55, -1)">-</button>
+        <span id="qty-Vanilla Scoop 3x" style="font-size: 0.88rem; font-weight: 700; width: 14px; text-align: center;">0</span>
+        <button class="btn-action" onclick="updateItem('Vanilla Scoop 3x', 55, 1)">+</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Sticky Bottom Bar -->
+  <div class="checkout-bar" id="checkoutBar" style="display: none;">
+    <div>
+      <div style="font-size: 0.72rem; color: var(--text-muted);" id="itemCount">0 Items</div>
+      <div style="font-size: 1.15rem; font-weight: 800; color: #fff;" id="cartTotal">₹0</div>
+    </div>
+    <button class="checkout-btn" onclick="openPaymentModal()">
+      Proceed to Pay <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+    </button>
+  </div>
+
+  <!-- Bottom-Right Watermark -->
+  <div class="watermark">@perseen's creation</div>
+
+  <!-- MODAL 1: Payment Screen -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModals()"><i data-lucide="x"></i></button>
+      
+      <h3 style="font-size: 1.1rem; font-weight: 700;">Scan &amp; Pay via UPI</h3>
+      <p style="font-size: 0.76rem; color: var(--text-muted); margin-top: 2px;">Pay, share the screenshot, and get your token</p>
+
+      <div class="qr-container">
+        <img id="dynamicQR" class="qr-img" src="" alt="UPI QR Code" />
+      </div>
+
+      <div class="upi-info">
+        Payee: <strong>Chithappa's Cafe</strong><br>
+        <div class="upi-id-box">perseenmp@okhdfcbank</div>
+      </div>
+
+      <a id="mobileUpiLink" href="#" style="display: inline-block; font-size: 0.82rem; color: var(--accent); text-decoration: underline; margin-bottom: 12px;">
+        Tap here to open UPI App directly
+      </a>
+
+      <button class="btn-paid" onclick="confirmPaymentAndIssueToken()">
+        <i data-lucide="check-circle" style="width: 18px; height: 18px;"></i> I Have Completed Payment
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Order Token Confirmation Screen -->
+  <div class="modal-overlay" id="tokenModal">
+    <div class="modal-card">
+      <div class="ticket-badge">Order Confirmed</div>
+      <h2 style="font-size: 1rem; color: var(--text-muted); margin-top: 4px;">YOUR PICKUP TOKEN</h2>
+      
+      <div class="token-display" id="tokenNumberDisplay">#TK-101</div>
+
+      <div class="ticket-divider"></div>
+
+      <div style="text-align: left; font-size: 0.8rem; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px;">
+        <div style="font-weight: 700; color: #fff; margin-bottom: 4px;">Order Summary:</div>
+        <div id="orderItemsSummary" style="color: var(--text-muted); line-height: 1.4;"></div>
+        <div style="font-weight: 700; color: #fff; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 4px;" id="orderTotalSummary"></div>
+      </div>
+
+      <p style="font-size: 0.74rem; color: var(--text-muted); margin-top: 10px;">
+        Send this token to stall WhatsApp to notify kitchen queue.
+      </p>
+
+      <a id="whatsappShareLink" href="#" target="_blank" class="whatsapp-send-btn">
+        <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i> Send Order &amp; Token on WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const UPI_ID = "perseenmp@okhdfcbank";
+    const PAYEE_NAME = "Perseen M.P";
+    const STALL_WHATSAPP = "+918838553103"; 
+
+    let cart = {};
+    let currentToken = localStorage.getItem("last_token_num") 
+      ? parseInt(localStorage.getItem("last_token_num")) 
+      : 100;
+
+    function updateItem(name, price, delta) {
+      if (!cart[name]) {
+        cart[name] = { price: price, qty: 0 };
+      }
+      cart[name].qty += delta;
+      
+      const qtyElem = document.getElementById(`qty-${name}`);
+      if (cart[name].qty <= 0) {
+        delete cart[name];
+        if (qtyElem) qtyElem.innerText = 0;
+      } else {
+        if (qtyElem) qtyElem.innerText = cart[name].qty;
+      }
+      renderCartBar();
+    }
+
+    function renderCartBar() {
+      let totalQty = 0;
+      let totalAmt = 0;
+      for (const item in cart) {
+        totalQty += cart[item].qty;
+        totalAmt += cart[item].qty * cart[item].price;
+      }
+
+      const bar = document.getElementById("checkoutBar");
+      if (totalQty > 0) {
+        bar.style.display = "flex";
+        document.getElementById("itemCount").innerText = `${totalQty} Item${totalQty > 1 ? 's' : ''}`;
+        document.getElementById("cartTotal").innerText = `₹${totalAmt}`;
+      } else {
+        bar.style.display = "none";
+      }
+    }
+
+    function openPaymentModal() {
+      let totalAmt = 0;
+      for (const item in cart) {
+        totalAmt += cart[item].qty * cart[item].price;
+      }
+
+      const upiUrl = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${totalAmt}&cu=INR&tn=${encodeURIComponent("Stall Order")}`;
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiUrl)}`;
+      
+      document.getElementById("dynamicQR").src = qrApiUrl;
+      document.getElementById("mobileUpiLink").href = upiUrl;
+
+      document.getElementById("paymentModal").style.display = "flex";
+    }
+
+    function confirmPaymentAndIssueToken() {
+      currentToken += 1;
+      localStorage.setItem("last_token_num", currentToken);
+      const tokenString = `#TK-${currentToken}`;
+
+      let totalAmt = 0;
+      let itemsListText = "";
+      let orderSummaryHtml = "";
+
+      for (const item in cart) {
+        const cost = cart[item].qty * cart[item].price;
+        totalAmt += cost;
+        itemsListText += `• ${item} x${cart[item].qty} (₹${cost})\n`;
+        orderSummaryHtml += `<div>${item} x${cart[item].qty} — ₹${cost}</div>`;
+      }
+
+      document.getElementById("tokenNumberDisplay").innerText = tokenString;
+      document.getElementById("orderItemsSummary").innerHTML = orderSummaryHtml;
+      document.getElementById("orderTotalSummary").innerText = `Total Paid: ₹${totalAmt}`;
+
+      const waMessage = 
+`🔔 *NEW PAID ORDER — TOKEN ${tokenString}*
+--------------------------------
+*Token:* ${tokenString}
+*Status:* Paid via UPI
+*Total Amount:* ₹${totalAmt}
+
+*Ordered Items:*
+${itemsListText}
+--------------------------------
+📍 *Pickup:* Please prepare this order for Token ${tokenString}.`;
+
+      const waLink = `https://wa.me/${STALL_WHATSAPP}?text=${encodeURIComponent(waMessage)}`;
+      document.getElementById("whatsappShareLink").href = waLink;
+
+      document.getElementById("paymentModal").style.display = "none";
+      document.getElementById("tokenModal").style.display = "flex";
+
+      cart = {};
+      document.querySelectorAll("[id^='qty-']").forEach(el => el.innerText = "0");
+      renderCartBar();
+    }
+
+    function closeModals() {
+      document.getElementById("paymentModal").style.display = "none";
+      document.getElementById("tokenModal").style.display = "none";
+    }
+
+    function filterCat(cat, btn) {
+      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      document.querySelectorAll(".dish-card").forEach(card => {
+        if (cat === "all" || card.getAttribute("data-cat") === cat) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
